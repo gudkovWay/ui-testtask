@@ -1,39 +1,58 @@
-import React from 'react';
-import { ItemsProps } from '../types';
-import { File } from './File';
-import { Folder } from './Folder';
+import { ItemsProps } from "../types";
+import { checkExtenshion } from "../utils/check";
+import { Icon } from "./Icon";
 
 interface TreeProps {
-  items: ItemsProps
+  items: ItemsProps;
+  expandedKeys: number[];
+  selectedKey: number;
+
+  onSelect: (id: number) => void;
+  onExpand: (id: number) => void;
 }
 
 export function Tree({
   items,
+  expandedKeys,
+  selectedKey,
+  onSelect,
+  onExpand,
 }: TreeProps) {
 
-  const [selectedKeys, setSelectedKeys] = React.useState<number>();
-
-  function onSelected(id: number) {
-    setSelectedKeys(id)
-  }
   return (
     <div className="tree">
+
       {
-        items.children ?
-          <Folder
-            items={items}
-            selectedKey={selectedKeys}
-            onSelect={onSelected}
+        items.children &&
+        <div className="folder" onClick={() => onExpand(items.id)}>
+          <Icon iconName={expandedKeys.includes(items.id) ? "folderOpen" : "folderClose"} />
+          <b className={selectedKey === items.id ? "selected" : undefined} onClick={() => onSelect(items.id)}>{items.name} {items.id}</b>
+        </div>
+      }
+
+      {
+        !items.children &&
+        <div className="file">
+          <Icon iconName={checkExtenshion(items.name)} />
+          <i className={selectedKey === items.id ? "selected" : undefined} onClick={() => onSelect(items.id)}>{items.name} {items.id}</i>
+        </div>
+      }
+
+      {
+        expandedKeys.includes(items.id) &&
+        items.children?.map((item) => (
+          <Tree
+            key={item.id}
+            items={item}
+            expandedKeys={expandedKeys}
+            selectedKey={selectedKey}
+            onSelect={onSelect}
+            onExpand={onExpand}
           />
-          : (
-            <File
-              items={items}
-              selectedKey={selectedKeys}
-              onSelect={onSelected}
-            />
-          )
+        ))
       }
 
     </div>
   )
+
 }
