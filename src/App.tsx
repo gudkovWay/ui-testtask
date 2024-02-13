@@ -17,7 +17,7 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <div className="app">
       {data.map((item) => (
         <Tree
           key={item.id}

@@ -1,14 +1,12 @@
-export function checkExtenshion(name: string) {
-  const tsxSource = "fileTsx";
-  const jsSource = "fileJs";
-  const fileSource = "file";
-  const extenshion = name.split('.').at(-1);
+import { ComponentProps } from "react";
+import { Icon } from "../component/Icon";
 
-  if (extenshion === 'js') {
-    return jsSource;
-  } else if (extenshion === 'tsx') {
-    return tsxSource;
-  } else {
-    return fileSource;
-  }
+const fileExtensionToIconMap = new Map<string, ComponentProps<typeof Icon>["name"]>([
+  ['js', 'js'],
+  ['tsx', 'tsx'],
+]);
+
+export function checkExtenshion(fileName: string): ComponentProps<typeof Icon>["name"] {
+  const fileExtension = fileName.split (".").pop() as string;
+  return fileExtensionToIconMap.get(fileExtension) || "file";
 }

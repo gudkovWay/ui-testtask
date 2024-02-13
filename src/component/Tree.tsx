@@ -20,21 +20,21 @@ export function Tree({
 }: TreeProps) {
 
   return (
-    <div className="tree">
+    <div className="col">
 
       {
         items.children &&
-        <div className="folder" onClick={() => onExpand(items.id)}>
-          <Icon iconName={expandedKeys.includes(items.id) ? "folderOpen" : "folderClose"} />
-          <b className={selectedKey === items.id ? "selected" : undefined} onClick={() => onSelect(items.id)}>{items.name} {items.id}</b>
+        <div className={selectedKey === items.id ? "wrapper selected" : "wrapper"} onClick={() => onExpand(items.id)}>
+          <Icon name={expandedKeys.includes(items.id) ? "folder-open" : "folder-close"} />
+          <p onClick={() => onSelect(items.id)}>{items.name} </p>
         </div>
       }
 
       {
         !items.children &&
-        <div className="file">
-          <Icon iconName={checkExtenshion(items.name)} />
-          <i className={selectedKey === items.id ? "selected" : undefined} onClick={() => onSelect(items.id)}>{items.name} {items.id}</i>
+        <div className={selectedKey === items.id ? "wrapper selected" : "wrapper"}>
+          <Icon name={checkExtenshion(items.name)} />
+          <p className={selectedKey === items.id ? "selected" : undefined} onClick={() => onSelect(items.id)}>{items.name}</p>
         </div>
       }
 
